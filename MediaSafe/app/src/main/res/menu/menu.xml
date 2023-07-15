@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu" android:icon="@drawable/baseline_menu_24" android:title="Menu"/>
+    <item android:id="@+id/inicio" android:icon="@drawable/baseline_home_24" android:title="Inicio"/>
+    <item android:id="@+id/expediente" android:icon="@drawable/baseline_folder_copy_24" android:title="Expediente"/>
+    <item android:id="@+id/diagnosticos" android:icon="@drawable/diagnosis" android:title="Diagnosticos"/>
+    <item android:id="@+id/medicamentos" android:icon="@drawable/pills" android:title="Medicamentos"/>
+
+</menu>

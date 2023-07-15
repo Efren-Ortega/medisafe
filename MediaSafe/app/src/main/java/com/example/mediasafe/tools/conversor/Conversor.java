@@ -1,0 +1,128 @@
+package com.example.mediasafe.tools.conversor;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.example.mediasafe.R;
+
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link Conversor#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class Conversor extends Fragment {
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
+
+    private Button btn_longitud, btn_peso, btn_volumen, btn_temp;
+
+
+    public Conversor() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment Conversor.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static Conversor newInstance(String param1, String param2) {
+        Conversor fragment = new Conversor();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view =  inflater.inflate(R.layout.fragment_conversor, container, false);
+
+        btn_longitud = (Button) view.findViewById(R.id.btn_longitud);
+        btn_longitud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivityLongitud();
+            }
+        });
+
+        btn_peso = (Button) view.findViewById(R.id.btn_peso);
+        btn_peso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivityPeso();
+            }
+        });
+
+        btn_volumen = (Button) view.findViewById(R.id.btn_volumen);
+        btn_volumen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openActivityVolumen();
+            }
+        });
+
+        btn_temp = (Button) view.findViewById(R.id.btn_temperatura);
+        btn_temp.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                openActivityTemperatura();
+            }
+        });
+
+        return view;
+
+    }
+
+    public void openActivityLongitud(){
+        Intent intent = new Intent(this.getActivity(), Longitud.class);
+        startActivity(intent);
+    }
+
+    public void openActivityPeso(){
+        Intent intent = new Intent(getContext(), Peso.class);
+        startActivity(intent);
+    }
+
+    public void openActivityVolumen(){
+        Intent intent = new Intent(getContext(), Volumen.class);
+        startActivity(intent);
+    }
+
+    public void openActivityTemperatura(){
+        Intent intent = new Intent(getContext(), Temperatura.class);
+        startActivity(intent);
+    }
+
+
+}
