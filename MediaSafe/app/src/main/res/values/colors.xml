@@ -11,7 +11,23 @@
     <color name="yellow">#FDC450</color>
     <color name="black_text">#212121</color>
     <color name="main">#BDFDF1</color>
-    <color name="blue">#2785BD</color>
+    <color name="blue">#31ABEF</color>
     <color name="gris">#585858</color>
     <color name="red">#FF4747</color>
+
+
+    <color name="main_color">#FFFFFF</color>
+    <color name="second_color">#D3E1E9</color>
+    <color name="bg_input_color">#D3E1E9</color>
+    <color name="btn_primary">#31ABEF</color>
+    <color name="btn">#6DC3F4</color>
+    <color name="txt_primary">#4A4A4A</color>
+    <color name="bg_icon">#4A4A4A</color>
+    <color name="txt_second">#616161</color>
+    <color name="txt_forms">#7D7D7D</color>
+
+    <color name="txt_title">#2A2A2A</color>
+    <color name="warn">#FE5656</color>
+    <color name="menu_options">#1B7AAE</color>
+
 </resources>

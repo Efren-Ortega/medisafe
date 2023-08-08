@@ -1,0 +1,31 @@
+<LinearLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:paddingHorizontal="10dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:paddingLeft="12dp"
+        android:background="@drawable/input_bg_form"
+        android:hint="Escribe aquí"
+        android:inputType="text" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Guardar" />
+
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancelar" />
+</LinearLayout>

@@ -35,6 +35,10 @@ Router.post('/medico/crearExpediente', _Medico.crearExpediente)
 Router.get('/medico/obtenerExpediente/:nss', _Medico.obtenerExpediente)
 Router.post('/medico/actualizarInformacion/:nss', _Medico.actualizarInfoPaciente)
 Router.delete('/medico/eliminarExpediente/:nss', _Medico.eliminarExpediente)
+Router.post('/nueva-alergia', _Paciente.agregarAlergia)
+Router.put('/modificar-alergia', _Paciente.modificarAlergia)
+Router.delete('/eliminar-alergia/:id', _Paciente.eliminarAlergia)
+Router.get('/alergias/:nss', _Paciente.obtenerAlergias)
 
 Router.post('/medico/registro', _Medico.crearCuenta)
 

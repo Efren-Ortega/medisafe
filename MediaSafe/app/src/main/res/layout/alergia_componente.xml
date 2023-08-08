@@ -1,0 +1,54 @@
+<LinearLayout android:id="@+id/alergia_componente"
+    android:layout_width="match_parent"
+    android:layout_height="45dp"
+    android:gravity="center_vertical"
+    android:background="@drawable/bg_input_2"
+    android:orientation="horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context=".medico.AlergiaRegistro"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ImageButton
+        android:id="@+id/iconAlergia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_alternate_email_24" />
+
+    <EditText
+        android:id="@+id/tv_alergia"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:ems="10"
+        android:inputType="text"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:enabled="false"
+        android:hint="Ingrese la Alergia"
+        android:textColor="@color/black"
+        android:background="@android:color/transparent"
+        android:textSize="16sp" />
+
+    <ImageButton
+        android:id="@+id/btn_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginStart="3dp"
+        android:padding="5dp"
+        android:layout_marginLeft="3dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_edit_24" />
+
+    <ImageButton
+        android:id="@+id/btn_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:padding="5dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/baseline_delete_24" />
+
+</LinearLayout>

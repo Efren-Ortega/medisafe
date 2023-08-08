@@ -11,6 +11,7 @@ import androidx.fragment.app.ListFragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -117,7 +118,7 @@ public class Home extends AppCompatActivity {
         iv_profile = headerView.findViewById(R.id.iv_profile);
         tv_name = headerView.findViewById(R.id.tv_name);
         tv_user = headerView.findViewById(R.id.tv_user);
-        LottieAnimationView imageButton = headerView.findViewById(R.id.imageButton);
+        ImageButton imageButton = headerView.findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,6 +1,7 @@
 package com.example.mediasafe.medico;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -14,8 +15,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
@@ -25,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.mediasafe.Expediente;
 import com.example.mediasafe.Login;
 import com.example.mediasafe.Perfil;
 import com.example.mediasafe.R;
@@ -48,6 +52,11 @@ public class HomeMedico extends AppCompatActivity {
     private TextView tv_name, tv_user;
     private ImageView iv_profile;
 
+
+    public interface OnBackPressedListener {
+        boolean onBackPressed();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,10 +74,23 @@ public class HomeMedico extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
+
+                    case R.id.inicio:
+                        drawerLayout.closeDrawer(GravityCompat.START);
+                        bottomNavigationView1.setVisibility(View.GONE);
+                        bottomNavigationView.setVisibility(View.VISIBLE);
+
+                        bottomNavigationView.setSelectedItemId(R.id.expediente);
+
+                        return true;
+
                     case R.id.tools:
                         drawerLayout.closeDrawer(GravityCompat.START);
                         bottomNavigationView1.setVisibility(View.VISIBLE);
                         bottomNavigationView.setVisibility(View.GONE);
+
+                        bottomNavigationView1.setSelectedItemId(R.id.calculadora);
+
                         return true;
 
                     case R.id.perfil:
@@ -103,20 +125,52 @@ public class HomeMedico extends AppCompatActivity {
         iv_profile = headerView.findViewById(R.id.iv_profile);
         tv_name = headerView.findViewById(R.id.tv_name);
         tv_user = headerView.findViewById(R.id.tv_user);
-        LottieAnimationView imageButton = headerView.findViewById(R.id.imageButton);
+        ImageButton imageButton = headerView.findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                drawerLayout.closeDrawer(GravityCompat.START);
                 loadFragment(new Perfil());
             }
         });
 
-        System.out.println("\n\n" + idPerfil + "\n\n");
         if(idPerfil != null){
             getDataUser(idPerfil);
         }
 
         drawerLayout = findViewById(R.id.drawer_layout);
+
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+                // No necesitamos implementar este método, puedes dejarlo vacío
+            }
+
+            @Override
+            public void onDrawerOpened(@NonNull View drawerView) {
+
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
+                if (!(fragment instanceof Perfil)) {
+                    // Llamar al método onBackPressed() del fragmento para manejar el retroceso
+                    bottomNavigationView.setSelectedItemId(R.id.menu);
+                }
+            }
+
+            @Override
+            public void onDrawerClosed(@NonNull View drawerView) {
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
+                if (!(fragment instanceof Perfil) && !(fragment instanceof Calculadora) && !(fragment instanceof ListTareas) && !(fragment instanceof Conversor)) {
+                    bottomNavigationView.setSelectedItemId(R.id.expediente);
+                }
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                // No necesitamos implementar este método, puedes dejarlo vacío
+            }
+
+
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener(){
             @Override
@@ -161,6 +215,7 @@ public class HomeMedico extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -224,4 +279,51 @@ public class HomeMedico extends AppCompatActivity {
 
         requestQueue.add(stringRequest);
     }
+
+    @Override
+    public void onBackPressed() {
+        if (bottomNavigationView.getVisibility() == View.GONE) {
+            // Si el bottomNavigationView1 está visible, restaura el bottomNavigationView original
+            bottomNavigationView1.setVisibility(View.GONE);
+            bottomNavigationView.setVisibility(View.VISIBLE);
+
+            // Cambia la selección del bottomNavigationView al Fragment anterior
+            bottomNavigationView.setSelectedItemId(R.id.expediente);
+        }else{
+
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frameLayout);
+
+            // Verificar si el fragmento actual es ExpedientePaciente
+            if (fragment instanceof ExpedientePaciente) {
+                // Llamar al método onBackPressed() del fragmento para manejar el retroceso
+                ((ExpedientePaciente) fragment).handleOnBackPressed();
+                super.onBackPressed();
+            }
+
+            if (fragment instanceof InfoPaciente) {
+                // Llamar al método onBackPressed() del fragmento para manejar el retroceso
+                super.onBackPressed();
+            }
+
+            if (fragment instanceof AlergiasPaciente) {
+                // Llamar al método onBackPressed() del fragmento para manejar el retroceso
+                super.onBackPressed();
+            }
+
+        }
+    }
+
+    private boolean isBottomNavigationVisible = true;
+
+    public void setBottomNavigationVisible(boolean visible) {
+        this.isBottomNavigationVisible = visible;
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setBottomNavigationVisible(isBottomNavigationVisible);
+    }
+
 }

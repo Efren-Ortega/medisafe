@@ -191,7 +191,9 @@ public class InicioMedico extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(et_nss.getText().length() != 0){
+
                     obtenerInfo();
                     txt_warn_nss.setVisibility(View.GONE);
                 }else{
@@ -349,8 +351,40 @@ public class InicioMedico extends Fragment {
                                 Snackbar.make(getView(), "Expediente Creado", Snackbar.LENGTH_LONG)
                                         .setAction("Action", null).show();
 
-                                btn_formCrear.setVisibility(View.GONE);
-                                btn_continuar.setVisibility(View.VISIBLE);
+                                // Crear un constructor de AlertDialog.Builder
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                                // Inflar el layout del contenido del AlertDialog
+                                View dialogView = getLayoutInflater().inflate(R.layout.layout_confirmation_dialog, null);
+                                builder.setView(dialogView);
+
+                                // Personalizar el AlertDialog
+                                builder.setCancelable(true); // Permite cerrar el AlertDialog haciendo clic fuera de él
+                                builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        btn_formCrear.setVisibility(View.GONE);
+                                        btn_continuar.setVisibility(View.VISIBLE);
+
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // Aquí se ejecuta la acción de cancelar si el usuario hace clic en el botón "Cancelar"
+                                        Toast.makeText(getContext(), "Cancelado", Toast.LENGTH_SHORT).show();
+                                        // Cerrar el AlertDialog
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                // Crear y mostrar el AlertDialog
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+
+
                             }
 
                         } catch (JSONException e) {//Error al ejecutar algo en la respuesta

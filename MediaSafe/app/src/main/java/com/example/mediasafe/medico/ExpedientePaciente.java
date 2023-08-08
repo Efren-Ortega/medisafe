@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.mediasafe.Expediente;
 import com.example.mediasafe.Login;
 import com.example.mediasafe.R;
 
@@ -34,7 +35,7 @@ public class ExpedientePaciente extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private LinearLayout btn_info_personal;
+    private LinearLayout btn_info_personal, btn_alergias;
     private ImageView iv_profile;
     private TextView tv_nombre, tv_edad, tv_nss;
 
@@ -42,16 +43,6 @@ public class ExpedientePaciente extends Fragment {
         // Required empty public constructor
     }
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ExpedientePaciente.
-     */
-    // TODO: Rename and change types and number of parameters
     public static ExpedientePaciente newInstance(String param1, String param2) {
         ExpedientePaciente fragment = new ExpedientePaciente();
         Bundle args = new Bundle();
@@ -114,11 +105,40 @@ public class ExpedientePaciente extends Fragment {
             }
         });
 
+        btn_alergias = view.findViewById(R.id.btn_alergias);
+        btn_alergias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btn_alergias.setBackgroundResource(R.drawable.bg_card);
+                abrirAlergias();
+            }
+        });
+
+        ImageView btn_icon_back = (ImageView) view.findViewById(R.id.btn_icon_back);
+        btn_icon_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Llama al método para cerrar el Fragment
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
         return view;
     }
 
     private void abrirInfoPaciente() {
         InfoPaciente fragmentoDestino = new InfoPaciente();
+        Bundle args = new Bundle();
+        args.putString("nss", tv_nss.getText().toString());
+
+
+        fragmentoDestino.setArguments(args);
+
+        loadFragment(fragmentoDestino);
+    }
+
+    private void abrirAlergias() {
+        AlergiasPaciente fragmentoDestino = new AlergiasPaciente();
         Bundle args = new Bundle();
         args.putString("nss", tv_nss.getText().toString());
 
@@ -135,4 +155,11 @@ public class ExpedientePaciente extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+    public void handleOnBackPressed() {
+        // Aquí puedes implementar el comportamiento deseado cuando se presiona el botón de retroceso en el fragmento
+        // Por ejemplo, si deseas volver a un fragmento específico:
+        requireActivity().getSupportFragmentManager().popBackStack("expediente", 0);
+    }
+
 }

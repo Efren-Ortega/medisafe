@@ -17,6 +17,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.provider.MediaStore;
 import android.util.Base64;
@@ -24,9 +25,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ToggleButton;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -38,6 +41,7 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.example.mediasafe.medico.HomeMedico;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
@@ -68,7 +72,7 @@ public class Perfil extends Fragment {
 
     private ImageButton edti_foto;
     private String base64Image_perfil;
-    private ImageView iv_profile;
+    private ImageView iv_profile, btn_icon_back;
     private static final int CAMERA_REQUEST = 1888;
     private static final int GALLERY_REQUEST = 2;
     private String base64Image;
@@ -76,7 +80,9 @@ public class Perfil extends Fragment {
 
 
     private EditText name, correo, apellidos, contra;
-    private Button btn_guardar;
+    private Button btn_guardar, btn_activar_huella;
+
+    private ToggleButton toggleButton;
 
     public Perfil() {
         // Required empty public constructor
@@ -117,6 +123,9 @@ public class Perfil extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_perfil, container, false);
 
+        SharedPreferences localStorage = getActivity().getSharedPreferences("localstorage", MODE_PRIVATE);
+
+
         edti_foto = (ImageButton) view.findViewById(R.id.edti_foto);
         iv_profile = (ImageView) view.findViewById(R.id.iv_profile);
         name = (EditText) view.findViewById(R.id.et_name);
@@ -124,6 +133,58 @@ public class Perfil extends Fragment {
         apellidos = (EditText) view.findViewById(R.id.et_last);
         contra = (EditText) view.findViewById(R.id.pass);
         btn_guardar = (Button) view.findViewById(R.id.btn_guardar);
+        btn_activar_huella = (Button) view.findViewById(R.id.btn_activar_huella);
+
+        toggleButton = (ToggleButton) view.findViewById(R.id.toggleButton);
+        btn_icon_back = (ImageView) view.findViewById(R.id.btn_icon_back);
+        String huella_token = localStorage.getString("huella_token", "");
+
+        if(!huella_token.equals("")){
+            toggleButton.setChecked(true);
+        }else{
+            toggleButton.setChecked(false);
+        }
+
+
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Aquí puedes realizar acciones según el estado del botón (Activado/Desactivado)
+                SharedPreferences localStorage = getActivity().getSharedPreferences("localstorage", MODE_PRIVATE);
+                SharedPreferences.Editor editor = localStorage.edit();
+
+                if (isChecked) {
+                    Snackbar.make(view, "Huella Activada", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                    String token = localStorage.getString("token", null);
+                    editor.putBoolean("Huella", true);
+                    editor.putString("huella_token", token);
+                    editor.apply();
+                } else {
+                    Snackbar.make(view, "Huella Desactivada", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                    editor.remove("Huella");
+                    editor.remove("huella_token");
+                    editor.apply();
+                }
+            }
+        });
+
+        btn_activar_huella.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences localStorage = getActivity().getSharedPreferences("localstorage", MODE_PRIVATE);
+                SharedPreferences.Editor editor = localStorage.edit();
+                String token = localStorage.getString("token", null);
+                Boolean Huella = localStorage.getBoolean("Huella", false);
+
+                editor.putBoolean("Huella", !Huella);
+                editor.putString("huella_token", token);
+                editor.apply();
+            }
+        });
 
         edti_foto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,10 +240,30 @@ public class Perfil extends Fragment {
             }
         });
 
+        btn_icon_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Llama al método para cerrar el Fragment
+                ((HomeMedico) requireActivity()).setBottomNavigationVisible(true);
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
         obtenerInfo();
         return view;
     }
 
+
+    private void closeFragment() {
+        // Obtiene el FragmentManager
+        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+
+        // Remueve este Fragment de la pila
+        fragmentManager.beginTransaction().remove(this).commit();
+
+        // Opcionalmente, puedes agregar una transición de animación para cerrar el Fragment
+        // fragmentManager.beginTransaction().remove(this).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE).commit();
+    }
 
     public void guardarFoto(){
 

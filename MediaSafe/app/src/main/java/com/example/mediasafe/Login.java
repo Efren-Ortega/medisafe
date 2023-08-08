@@ -1,13 +1,24 @@
 package com.example.mediasafe;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.app.ActivityCompat;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+
+
+import androidx.biometric.BiometricManager;
+import androidx.core.content.ContextCompat;
+
+
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.text.InputType;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,6 +37,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.mediasafe.medico.HomeMedico;
 import com.google.android.material.snackbar.Snackbar;
+import android.util.Base64;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,7 +50,7 @@ public class Login extends AppCompatActivity {
 
     private EditText pass;
     private EditText et_email;
-    private ImageButton showPasswordButton;
+    private ImageButton showPasswordButton, btn_huella;
     private TextView txtRegDerechoHabiente, txtRegMedico, txtRecuperarContraseña;
 
     private Button btnIngresar;
@@ -61,6 +74,8 @@ public class Login extends AppCompatActivity {
             editTextIP.setText(ip);
         }
 
+        btn_huella = (ImageButton) findViewById(R.id.btn_huella);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Ingresar IP")
                 .setView(editTextIP)
@@ -74,6 +89,16 @@ public class Login extends AppCompatActivity {
                         SharedPreferences.Editor editor = localStorage.edit();
                         editor.putString("ip", ip);
                         editor.apply();
+
+                        Boolean Huella = localStorage.getBoolean("Huella", false);
+                        String huella_token = localStorage.getString("huella_token", "");
+
+
+                        if(Huella == true && !huella_token.equals("")){
+                            checkBiometricSupport();
+                            showBiometricPrompt();
+                            btn_huella.setVisibility(View.VISIBLE);
+                        }
 
                     }
                 })
@@ -89,11 +114,29 @@ public class Login extends AppCompatActivity {
         txtRegMedico = (TextView) findViewById(R.id.txtRegMedico);
         txtRecuperarContraseña= (TextView) findViewById(R.id.txtRecuperarContraseña);
         btnIngresar = (Button) findViewById(R.id.btn_Ingresar);
-
         btnIngresar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 autenticarse(view);
+            }
+        });
+
+
+        btn_huella.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkBiometricSupport();
+                showBiometricPrompt();
+            }
+        });
+
+        btn_huella.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                checkBiometricSupport();
+                showBiometricPrompt();
+
+                return true;
             }
         });
 
@@ -155,10 +198,81 @@ public class Login extends AppCompatActivity {
 
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         ipDialog.show();
+    }
+
+
+    private void checkBiometricSupport() {
+        BiometricManager biometricManager = BiometricManager.from(this);
+
+        switch (biometricManager.canAuthenticate()) {
+            case BiometricManager.BIOMETRIC_SUCCESS:
+                //Toast.makeText(this, "Autenticación exitosa", Toast.LENGTH_SHORT).show();
+
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+                // El dispositivo no tiene un sensor de huellas digitales.
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+                // El sensor de huellas digitales no está disponible actualmente.
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                // No se han registrado huellas digitales en el dispositivo.
+                break;
+        }
+
+
+    }
+
+    private void showBiometricPrompt() {
+        BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Autenticación con huella digital")
+                .setSubtitle("Coloca tu huella en el lector")
+                .setNegativeButtonText("Cancelar")
+                .build();
+
+        BiometricPrompt biometricPrompt = new BiometricPrompt(this,
+                ContextCompat.getMainExecutor(this), new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                SharedPreferences localStorage = getSharedPreferences("localstorage", MODE_PRIVATE);
+
+                String huella_token = localStorage.getString("huella_token", null);
+
+                String rol = localStorage.getString("rol", null);
+                Toast.makeText(getApplicationContext(), "Rol: " + huella_token, Toast.LENGTH_SHORT).show();
+
+                if(huella_token != null && rol != null){
+
+                    if(rol.equals("medico")){
+                        Intent intent = new Intent(getApplicationContext(), HomeMedico.class);
+                        startActivity(intent);
+                        finish();
+                    }else if(rol.equals("paciente")){
+                        Intent intent = new Intent(getApplicationContext(), Home.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                // La autenticación falló. Puedes mostrar un mensaje de error aquí.
+            }
+
+            @Override
+            public void onAuthenticationError(int errorCode, CharSequence errString) {
+                // Ocurrió un error en la autenticación. Puedes manejarlo aquí.
+            }
+        });
+
+        biometricPrompt.authenticate(promptInfo);
     }
 
     //Requests to the Server

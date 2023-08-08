@@ -9,65 +9,87 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_header"
+        android:background="@color/second_color"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingVertical="20dp"
             android:paddingHorizontal="5dp"
             >
 
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/iv_profile"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/photo" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="15dp">
+                android:layout_height="match_parent"
+                android:paddingHorizontal="15dp"
+                >
 
-                <TextView
-                    android:id="@+id/tv_name"
-                    android:layout_width="123dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_weight="1"
-                    android:text="Nombre Apelldio Apellido"
-                    android:textColor="#212121"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_profile"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/photo" />
 
-                <TextView
-                    android:id="@+id/tv_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="User2831@"
-                    android:textSize="14dp" />
+
+
 
             </LinearLayout>
 
-            <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/imageButton"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                app:lottie_autoPlay="true"
-                app:lottie_loop="true"
-                app:lottie_fileName="edit.json" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:paddingLeft="15dp"
+                >
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:id="@+id/tv_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"
+                        android:layout_weight="1"
+                        android:text="Nombre Apelldio Apellido"
+                        android:textColor="@color/txt_primary"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="User2831@"
+                        android:textColor="@color/txt_primary"
+                        android:textSize="14dp" />
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/transparent"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_next"
+                    >
+
+                </ImageButton>
+
+            </LinearLayout>
 
         </LinearLayout>
 

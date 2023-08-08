@@ -121,6 +121,15 @@ public class InfoPaciente extends Fragment {
 
         obtenerInfo();
 
+        ImageView btn_icon_back = (ImageView) view.findViewById(R.id.btn_icon_back);
+        btn_icon_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Llama al método para cerrar el Fragment
+                requireActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
         return view;
     }
 

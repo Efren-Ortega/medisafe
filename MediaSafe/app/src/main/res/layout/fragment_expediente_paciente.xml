@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    android:id="@+id/expediente_paciente"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,7 +10,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,9 +22,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textSize="22dp"
+                    android:textColor="@color/txt_title"
+                    android:text="Expediente"
+                    ></TextView>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
+                android:background="@drawable/bg_card_gris"
                 android:padding="10dp"
-                android:background="@color/main"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginTop="28dp"
                 android:orientation="horizontal">
 
 
@@ -59,8 +86,29 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="Nombre Apellido Apellido"
-                            android:textColor="@color/black"
+                            android:textColor="@color/txt_primary"
                             android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:src="@drawable/nss" />
+
+                        <TextView
+                            android:id="@+id/tv_nss"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="1883941844"
+                            android:textColor="@color/txt_primary"
+                            />
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -73,35 +121,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="10dp"
-                            android:src="@drawable/baseline_widgets_24" />
+                            android:src="@drawable/baseline_numbers_24" />
 
                         <TextView
                             android:id="@+id/tv_edad"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="22 años"
-                            android:textColor="@color/black_text"
-                            />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:src="@drawable/baseline_widgets_24" />
-
-                        <TextView
-                            android:id="@+id/tv_nss"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="1883941844"
-                            android:textColor="@color/black_text"
+                            android:textColor="@color/txt_primary"
                             />
 
                     </LinearLayout>
@@ -112,7 +139,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="15dp">
 
                 <LinearLayout
@@ -124,7 +151,7 @@
                     <LinearLayout
                         android:id="@+id/btn_info_personal"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="100dp"
                         android:layout_marginRight="10dp"
                         android:layout_weight="1"
                         android:background="@drawable/bg_card_no_active"
@@ -158,7 +185,7 @@
                     <LinearLayout
                         android:id="@+id/btn_antecedentes"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="100dp"
                         android:layout_weight="1"
                         android:layout_marginLeft="10dp"
                         android:background="@drawable/bg_card_no_active"
@@ -185,12 +212,12 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:padding="15dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -209,7 +236,7 @@
                             android:id="@+id/imageView5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/water_drop_60" />
+                            android:src="@drawable/alergia" />
 
                         <TextView
                             android:id="@+id/textView10"
@@ -224,6 +251,17 @@
 
             </LinearLayout>
 
+
+
         </LinearLayout>
     </ScrollView>
+
+    <ImageView
+        android:id="@+id/btn_icon_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/baseline_navigate_before_24" />
+
 </FrameLayout>
